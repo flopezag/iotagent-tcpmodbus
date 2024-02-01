@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+const info = require('../package.json')
+const iotAgentLib = require('iotagent-node-lib');
+const iotAgent = require('../lib/iotagentCore');
+
+const context = {
+    op: 'IoTAgentModbus.Executable'
+};
+
+function start() {
+    let config;
+
+    if (process.argv.length === 3) {
+        config = require('../' + process.argv[2]);
+    } else {
+        config = require('../config');
+    }
+
+    config.iota.iotaVersion = info.version;
+
+    iotAgentLib.startServer(config, iotAgent, function (error) {
+        if (error) {
+            logger.error(context, 'Error starting Modbus IoT Agent: [%s] Exiting process', JSON.stringify(error));
+        } else {
+            logger.info(context, 'Modbus IoT Agent started');
+        }
+    });
+}
+
+start();

@@ -11,7 +11,7 @@ describe('Function Code Field from well-known ModBus Function Code', function ()
             const mb_req_pdu = Buffer.from("0500ACFF00", "hex");
             const expected_response = Buffer.from("0500ACFF00", "hex");
 
-            let obtained_response = mb_fnc[mb_fnc_code.toString('hex')](mb_fnc_code, mb_req_pdu);
+            let obtained_response = mb_fnc[mb_fnc_code.toString('hex')](mb_req_pdu);
 
             should.equal(expected_response.toString('hex'), obtained_response.toString('hex'));
         });
@@ -23,12 +23,35 @@ describe('Function Code Field from well-known ModBus Function Code', function ()
             const mb_req_pdu = Buffer.from("0600010003", "hex");
             const expected_response = Buffer.from("0600010003", "hex");
 
-            let obtained_response = mb_fnc[mb_fnc_code.toString('hex')](mb_fnc_code, mb_req_pdu);
+            let obtained_response = mb_fnc[mb_fnc_code.toString('hex')](mb_req_pdu);
 
             should.equal(expected_response.toString('hex'), obtained_response.toString('hex'));
         });
     });
 
+    describe('Generate Function Code Field of a Function Code 0x02 with 22 (0x16) quantity of inputs', function () {
+        it('should return the ModBus PDU with details of 3 bytes count and 3 bytes', function () {
+            const mb_fnc_code = Buffer.from('02', 'hex');
+            const mb_req_pdu = Buffer.from("0200C40016", "hex");
+            const expected_response = Buffer.from("0203ACDB35", "hex");
+
+            let obtained_response = mb_fnc[mb_fnc_code.toString('hex')](mb_req_pdu);
+
+            should.equal(expected_response.toString('hex'), obtained_response.toString('hex'));
+        });
+    });
+
+    describe('Generate Function Code Field of a Function Code 0x03 with 3 (0x03) quantity of registers', function () {
+        it('should return the ModBus PDU with details of 3 bytes count and 3 holding registers', function () {
+            const mb_fnc_code = Buffer.from('03', 'hex');
+            const mb_req_pdu = Buffer.from("03006B0003", "hex");
+            const expected_response = Buffer.from("0306022B00000064", "hex");
+
+            let obtained_response = mb_fnc[mb_fnc_code.toString('hex')](mb_req_pdu);
+
+            should.equal(expected_response.toString('hex'), obtained_response.toString('hex'));
+        });
+    });
 });
 
 describe('Get multiple data from mb_req_pdu', function () {

@@ -1,1 +1,1 @@
-module.exports = require('./bin/modbus-iotagent')
+module.exports = require('./bin/iotagent-modbus')
